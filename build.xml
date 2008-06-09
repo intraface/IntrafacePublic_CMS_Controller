@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+<project name="IntrafacePublic_CMS_Controller" basedir="." default="make">
+    <property file="./build.properties" />
+    <taskdef classname="phing.tasks.ext.d51PearPkg2Task" name="d51pearpkg2" />
+    <taskdef classname="phing.tasks.ext.IlibPearDeployerTask" name="peardeploy" />
+
+    <property name="package-name" value="IntrafacePublic_CMS_Controller" />
+    <property name="version" value="0.1.0" />
+    <property name="stability" value="alpha" />
+
+    <target name="export">
+        <echo msg="Exporting SVN files" />
+        <delete dir="./build" />
+        <exec command="svn export ./src ./build" />
+    </target>
+
+    <target name="build" depends="export">
+        <d51pearpkg2 dir="./build" baseinstalldir="/">
+            <name>${package-name}</name>
+            <summary>Controller for the CMS</summary>
+            <channel>public.intraface.dk</channel>
+            <description>
+                <!--        Don't exceed this width         -->
+                Controller for the cms.
+            </description>
+
+            <lead user="lsolesen" name="Lars Olesen" email="lars@legestue.net" />
+            <license>LGPL</license>
+
+            <version release="${version}" api="${version}" />
+            <stability release="${stability}" api="${stability}" />
+
+            <dependencies>
+                <php minimum_version="5.2.0" />
+
+                <pear minimum_version="1.6.0"
+                      recommended_version="1.6.1" />
+
+                <package name="ilib_recursive_array_map"
+                         channel="public.intraface.dk"
+                         recommended_version="0.1.0"
+                         minimum_version="0.1.0" />
+
+                <package name="konstrukt"
+                         channel="public.intraface.dk"
+                         recommended_version="0.1.0"
+                         minimum_version="0.1.0" />
+            </dependencies>
+
+            <changelog version="0.1.0" date="2007-12-01" license="LGPL">
+                First version as a PEAR package
+            </changelog>
+            <notes>
+                * none
+            </notes>
+        </d51pearpkg2>
+    </target>
+
+    <target name="make" depends="build">
+        <echo msg="Creating PEAR archive file for ${package-name}" />
+        <mkdir dir="./build/${package-name}-${version}" />
+        <copy todir="./build/${package-name}-${version}">
+            <fileset dir="./build">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <delete file="${package-name}-${version}.tgz" />
+        <tar compression="gzip" destfile="${package-name}-${version}.tgz" basedir="./build" />
+    </target>
+
+
+    <target name="deploy" depends="make">
+        <echo msg="Deploying package" />
+        <peardeploy uri="${pear.channel.uri}" username="${pear.channel.username}" password="${pear.channel.password}">
+              <fileset dir="./">
+                <include name="${package-name}-${version}.tgz"/>
+              </fileset>
+        </peardeploy>
+    </target>
+
+
+    <target name="docs" depends="export">
+        <echo msg="Creating documentation" />
+        <phpdoc title="ilib_recursive_array_map Docs"
+            destdir="./apidocs"
+            sourcecode="./build"
+            output="HTML:frames:DOM/earthli"
+        >
+            <fileset dir="./build">
+                <include name="**" />
+            </fileset>
+        </phpdoc>
+    </target>
+</project>
