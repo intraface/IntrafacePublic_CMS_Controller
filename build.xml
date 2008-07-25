@@ -36,11 +36,6 @@
                 <pear minimum_version="1.6.0"
                       recommended_version="1.6.1" />
 
-                <package name="ilib_recursive_array_map"
-                         channel="public.intraface.dk"
-                         recommended_version="0.1.0"
-                         minimum_version="0.1.0" />
-
                 <package name="konstrukt"
                          channel="public.intraface.dk"
                          recommended_version="0.1.0"
