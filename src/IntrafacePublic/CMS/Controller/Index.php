@@ -1,6 +1,4 @@
 <?php
-require_once 'recursive_array_map.php';
-
 class IntrafacePublic_CMS_Controller_Index extends k_Controller
 {
     private $identifier = '';
