@@ -3,9 +3,15 @@ class IntrafacePublic_CMS_Controller_Index extends k_Controller
 {
     private $identifier = '';
 
+    function getCMS()
+    {
+        return $this->context->getCMS();
+    }
+
     function GET()
     {
-        $client = $this->registry->get('cms');
+        $client = $this->getCMS();
+        
         $page = $client->getPage($this->identifier);
 
         if (!empty($page['http_header_status']) AND $page['http_header_status'] == 'HTTP/1.0 404 Not Found') {
