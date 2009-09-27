@@ -1,0 +1,30 @@
+/* Enquiry */
+
+div#enquiry {
+	border-bottom: 3px solid grey;
+	border-top: 3px solid grey;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+div#row {
+	clear: both;
+	margin-bottom: 5px;
+}
+
+div#row label {
+	display: block;
+	width: 100px;
+	float: left;
+}
+
+div#row textarea {
+	width: 90%;
+	height: 75px;
+	
+}
+
+p.message {
+	border: 1px solid red;
+	padding: 4px;
+}
