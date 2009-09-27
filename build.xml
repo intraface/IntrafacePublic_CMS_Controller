@@ -4,7 +4,7 @@
     <taskdef classname="phing.tasks.ext.IlibPearDeployerTask" name="peardeploy" />
 
     <property name="package-name" value="${phing.project.name}" />
-    <property name="version" value="1.0.0" />
+    <property name="version" value="2.0.0" />
     <property name="stability" value="stable" />
     <property name="pear.channel" value="public.intraface.dk" />
 
@@ -52,12 +52,14 @@
             <license>LGPL</license>
             <version release="${version}" api="${version}" />
             <stability release="${stability}" api="${stability}" />
+            <release>
+            </release>
             <dependencies>
                 <php minimum_version="5.2.0" />
                 <pear minimum_version="1.6.0" recommended_version="1.6.1" />
                 <package name="konstrukt" channel="public.intraface.dk" recommended_version="0.4.0" minimum_version="0.4.0" />
             </dependencies>
-            <notes>* Introduced getCMS()</notes>
+            <notes>* New use of Index controller and added Enquiry controller</notes>
         </d51pearpkg2>
     </target>
 
