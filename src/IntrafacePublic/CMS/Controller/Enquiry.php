@@ -44,7 +44,7 @@ class IntrafacePublic_CMS_Controller_Enquiry extends IntrafacePublic_CMS_Control
             $body = $this->POST['name']."\n".$this->POST['company']."\nE-mail: ".$this->POST['email']."\nTelefon: ".$this->POST['phone']."\nhar lavet en forespørgsel:\n".$this->POST['enquiry']."\n\nSendt den ".date('d/m/Y H:i:s');
             $body = wordwrap($body, 70);
             
-            if(mail(utf8_decode($this->mail_reciever), utf8_decode($subject), utf8_decode($body), utf8_decode("From: ".$sender."\nBcc:".$this->mail_bcc))) {
+            if(mail($this->mail_reciever, $subject, $body, "From: ".$sender."\nBcc:".$this->mail_bcc)) {
                 $this->message = 'Din forespørgsel er sendt. Vi vender snarest tilbage. Ha\' en god dag.'; 
                 $this->POST = array();
             }
