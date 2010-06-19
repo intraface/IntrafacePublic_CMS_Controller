@@ -29,6 +29,8 @@ class Root extends k_Dispatcher
     {
         if($name == 'enquiry') {
             $next = new IntrafacePublic_CMS_Controller_Enquiry($this, $name, 'mail@to.dk', 'mail@bcc.dk');
+        } elseif($name == 'sitemap') {
+            $next = new IntrafacePublic_CMS_Controller_SiteMap($this, $name);
         } else {
             $next = new IntrafacePublic_CMS_Controller_Index($this, $name);
         }
