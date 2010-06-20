@@ -4,7 +4,7 @@
     <taskdef classname="phing.tasks.ext.IlibPearDeployerTask" name="peardeploy" />
 
     <property name="package-name" value="${phing.project.name}" />
-    <property name="version" value="2.1.0" />
+    <property name="version" value="2.1.1" />
     <property name="stability" value="stable" />
     <property name="pear.channel" value="public.intraface.dk" />
 
@@ -59,7 +59,7 @@
                 <pear minimum_version="1.6.0" recommended_version="1.6.1" />
                 <package name="konstrukt" channel="public.intraface.dk" recommended_version="0.4.0" minimum_version="0.4.0" />
             </dependencies>
-            <notes>* Added sitemap</notes>
+            <notes>* Added possibility to modyfi page title</notes>
         </d51pearpkg2>
     </target>
 
