@@ -12,6 +12,15 @@ class IntrafacePublic_CMS_Controller_Index extends k_Controller
         return $this->context->getPathToTemplate($template);
     }
     
+    private function modifyTitle($title)
+    {
+        if(is_callable(array($this->context, 'modifyTitle'))) {
+            return $this->context->modifyTitle($title);
+        }
+        
+        return $title;
+    }
+    
     /**
      * Funktion which makes it possible to extend from this controller and overwrite
      * this function to add sections to the template. 
@@ -39,7 +48,7 @@ class IntrafacePublic_CMS_Controller_Index extends k_Controller
         }
 
         $html = new IntrafacePublic_CMS_HTML_Parser($page);
-        $this->document->title = $page['title'];
+        $this->document->title = $this->modifyTitle($page['title']);
         $this->document->style = $page['css'];
         $this->document->keywords = $page['keywords'];
         $this->document->description = $page['description'];
