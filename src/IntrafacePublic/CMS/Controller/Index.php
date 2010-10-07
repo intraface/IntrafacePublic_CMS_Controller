@@ -1,54 +1,29 @@
 <?php
-class IntrafacePublic_CMS_Controller_Index extends k_Controller
+class IntrafacePublic_CMS_Controller_Index extends k_Component
 {
-    
-    public function getCMS()
-    {
-        return $this->context->getCMS();
-    }
-    
-    public function getPathToTemplate($template)
-    {
-        return $this->context->getPathToTemplate($template);
-    }
-    
-    private function modifyTitle($title)
-    {
-        if(is_callable(array($this->context, 'modifyTitle'))) {
-            return $this->context->modifyTitle($title);
-        }
-        
-        return $title;
-    }
-    
-    /**
-     * Funktion which makes it possible to extend from this controller and overwrite
-     * this function to add sections to the template. 
-     * IntrafacePublic_CMS_Controller_Enquiry uses this function.
-     *  
-     * @return array with extra sections.
-     */
-    protected function addSections($sections)
-    {
-        return $sections;
-    } 
+    protected $template;
 
-    function GET()
+    function __construct(k_TemplateFactory $template)
+    {
+        $this->template = $template;
+    }
+
+    function renderHtml()
     {
         $client = $this->getCMS();
 
-        if(isset($this->GET['update'])) {
-            $client->clearPageCache($this->name);
+        if ($this->query('update')) {
+            $client->clearPageCache($this->name());
         }
-        
-        $page = $client->getPage($this->name);
+
+        $page = $client->getPage($this->name());
 
         if (!empty($page['http_header_status']) AND $page['http_header_status'] == 'HTTP/1.0 404 Not Found') {
-            throw new k_http_Response(404);
+            throw new k_PageNotFound();
         }
 
         $html = new IntrafacePublic_CMS_HTML_Parser($page);
-        $this->document->title = $this->modifyTitle($page['title']);
+        $this->document->setTitle($this->modifyTitle($page['title']));
         $this->document->style = $page['css'];
         $this->document->keywords = $page['keywords'];
         $this->document->description = $page['description'];
@@ -59,16 +34,41 @@ class IntrafacePublic_CMS_Controller_Index extends k_Controller
         } else {
             $this->document->navigation['sublevel'] = array();
         }
-        
+
         $sections = $html->getSections();
         $sections = $this->addSections($sections);
-        return $this->render($this->getPathToTemplate($page['template_identifier'].'-tpl.php'), $sections);
+        $tpl = $this->template->create($this->getPathToTemplate($page['template_identifier']));
+        return $tpl->render($this, $sections);
     }
-    
-    /*
-    function forward($name)
+
+    public function getCMS()
     {
-        $this->name = $name;
-        return $this->GET();
-    }*/
+        return $this->context->getCMS();
+    }
+
+    public function getPathToTemplate($template)
+    {
+        return $this->context->getPathToTemplate($template);
+    }
+
+    private function modifyTitle($title)
+    {
+        if (is_callable(array($this->context, 'modifyTitle'))) {
+            return $this->context->modifyTitle($title);
+        }
+
+        return $title;
+    }
+
+    /**
+     * Funktion which makes it possible to extend from this controller and overwrite
+     * this function to add sections to the template.
+     * IntrafacePublic_CMS_Controller_Enquiry uses this function.
+     *
+     * @return array with extra sections.
+     */
+    protected function addSections($sections)
+    {
+        return $sections;
+    }
 }
