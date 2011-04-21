@@ -18,7 +18,7 @@ class IntrafacePublic_CMS_Controller_Index extends k_Component
 
         $page = $client->getPage($this->name());
 
-        if (!empty($page['http_header_status']) AND $page['http_header_status'] == 'HTTP/1.0 404 Not Found') {
+        if ($page === null OR !empty($page['http_header_status']) AND $page['http_header_status'] == 'HTTP/1.0 404 Not Found') {
             throw new k_PageNotFound();
         }
 
